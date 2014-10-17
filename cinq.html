@@ -5,7 +5,57 @@
 
 		<script>
 			window.addEventListener("DOMContentLoaded", function(){
-				// 
+				// Calling object.foo returns "undefined". How do you test if:
+				//  - (a) object has a property named foo which is currently set to undefined, OR
+				//  - (b) object does not have a property named foo
+				
+				var obj = new Object();
+
+				obj.descriptor  = "I am a description";
+				obj.status      = 14;
+				obj.isUndefined = undefined;
+
+				console.log("The following [obj.foo] should be undefined:", obj.foo);
+
+				if(obj.hasOwnProperty("demo")){
+					if(obj.demo === undefined){
+						console.error("[object obj] HAS property \"demo\", but it's value is \"undefined\"");
+					}else {
+						console.log("[object obj] has property \"demo\"");
+					}
+				}else {
+					console.error("[object obj] does NOT have property \"demo\"");
+				}
+
+				if(obj.hasOwnProperty("descriptor")){
+					if(obj.descriptor === undefined){
+						console.error("[object obj] HAS property \"descriptor\", but it's value is \"undefined\"");
+					}else {
+						console.log("[object obj] has property \"descriptor\"");
+					}
+				}else {
+					console.error("[object obj] does NOT have property \"descriptor\"");
+				}
+
+				if(obj.hasOwnProperty("status")){
+					if(obj.status === undefined){
+						console.error("[object obj] HAS property \"status\", but it's value is \"undefined\"");
+					}else {
+						console.log("[object obj] has property \"status\"");
+					}
+				}else {
+					console.error("[object obj] does NOT have property \"status\"");
+				}
+
+				if(obj.hasOwnProperty("isUndefined")){
+					if(obj.isUndefined === undefined){
+						console.error("[object obj] HAS property \"isUndefined\", but it's value is \"undefined\"");
+					}else {
+						console.log("[object obj] has property \"isUndefined\"");
+					}
+				}else {
+					console.error("[object obj] does NOT have property \"isUndefined\"");
+				}
 			});
 		</script>
 	</head>
