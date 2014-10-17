@@ -3,13 +3,120 @@
 	<head>
 		<title>Quatre</title>
 
+		<style>
+			textarea {
+				width: 800px;
+				height: 200px;
+				border: 2px solid #ccc;
+				font-size: 14px;
+			}
+
+			.success {
+				border-color: #4F8A10;
+				color: #4F8A10;
+				background-color: #DFF2BF;
+			}
+
+			.error {
+				border-color: #D8000C;
+				color: #D8000C;
+				background-color: #FFBABA;
+			}
+		</style>
+
 		<script>
 			window.addEventListener("DOMContentLoaded", function(){
-				// 
+				// Give an example of how you'd submit a form using AJAX (you can use jQuery). Make sure to:
+				// - Disable the form from being submitted while a request is in progress
+				// - Show an indicator while the request is processing
+				// - Show some kind of success message
+				// - Gracefully handle server errors.
+
+				//jQuery-free simple AJAX request object
+				// - I'm not a big jQuery fan so I try to work without it unless it's part of the project requirements
+				var Request = function(url){
+					this.url = url;
+					this.response = false;
+					this.status = 500;
+
+					return this.handle();
+				};
+
+					/**
+					 * Initiate an AJAX request
+					 * @return {void}
+					 */
+					Request.prototype.handle = function(){
+						var xhr = new XMLHttpRequest();
+
+						xhr.onreadystatechange = function(){
+							if(xhr.readyState == 4){
+								this.response = xhr.responseText;
+								this.status = xhr.status;
+							}
+						}.bind(this);
+
+						xhr.open("GET", this.url, false);
+						xhr.send();
+					};
+
+					/**
+					 * Determine the validity of the response data
+					 * @return {Boolean} True if data is valid
+					 */
+					Request.prototype.isValid = function(){
+						return (this.status < 300);
+					};
+
+				//create and handle the AJAX request when the button is clicked
+				var	actionBtn  = document.querySelector("button[name=action]");
+
+				actionBtn.addEventListener("click", function(evt){
+					evt.preventDefault();
+
+					var url = "quatre.json", //change name of file here to anything else to see the error message
+						data = new Request(url),
+						message = null,
+						textAreaEl = document.querySelector("textarea");
+
+					//reset styling on the textarea
+					textAreaEl.classList.remove("success");
+					textAreaEl.classList.remove("error");
+					textAreaEl.innerText = "Requesting file "+ url +"...";
+
+					//disable the form while loading
+					this.disabled = true;
+					textAreaEl.disabled = true;
+
+					//simulate loading for 5 seconds to show the form is disabled while "loading"
+					setTimeout(function(){
+						//re-enable the form elements after loading is complete
+						actionBtn.disabled = false;
+						textAreaEl.disabled = false;
+
+						//show an error if the data file could not be located OR if it is not a JSON file
+						if(data.isValid()){
+							message = data.response;
+
+							textAreaEl.classList.add("success");
+						}else {
+							message = "An error occurred and the data could not be retrieved" ;
+							
+							textAreaEl.classList.add("error");
+						}
+
+						textAreaEl.innerText = message;
+					}, 5000);
+				})
 			});
 		</script>
 	</head>
 	<body>
-
+		<h1>Load Sample Data</h1>
+		<p>Loads data from file ./quatre.json</p>
+		<form method="get">
+			<textarea placeholder="Click the button below to populate me!"></textarea><br />
+			<button name="action">Load Data</button>
+		</form>
 	</body>
 </html>
