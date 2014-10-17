@@ -90,10 +90,6 @@
 
 					//simulate loading for 5 seconds to show the form is disabled while "loading"
 					setTimeout(function(){
-						//re-enable the form elements after loading is complete
-						actionBtn.disabled = false;
-						textAreaEl.disabled = false;
-
 						//show an error if the data file could not be located OR if it is not a JSON file
 						if(data.isValid()){
 							message = data.response;
@@ -106,6 +102,10 @@
 						}
 
 						textAreaEl.innerText = message;
+
+						//re-enable the form elements after loading is complete
+						actionBtn.disabled = false;
+						textAreaEl.disabled = false;
 					}, 5000);
 				})
 			});
