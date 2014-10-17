@@ -4,10 +4,39 @@
 		<title>Uno</title>
 		
 		<script>
-			//
+			window.addEventListener("DOMContentLoaded", function(){
+				// Iterate over an array of people objects, determine how old they'll be in 5 years and greet them accordingly (if no greet function available, just say "hello name")
+
+				var people = [
+					{name: "Jack", age: "20", greet: function(name) { return 'Howdy, ' + name; } },
+					{name: "Jill", age: "25", greet: function(name) { return "What's up, " + name; } },
+					{name:  "Alex", age: 30}
+				];
+
+				for(var i = 0; i < people.length; i++){
+					var person = people[i],
+						currentAge = parseInt(person.age),
+						listEl = document.createElement("li");
+
+					//greet the user
+					if(typeof person.greet === "function"){
+						listEl.innerHTML = person.greet(person.name) +"!  ";
+					}else {
+						listEl.innerHTML = "Hello, "+ person.name + "!  ";
+					}
+
+					//determine age in 5 years
+					listEl.innerHTML += "In 5 years, you will be <strong>"+ (currentAge += 5) +"</strong>.";
+
+					//add message to the people node in the DOM
+					document.querySelector("ul.people").appendChild(listEl);
+				}
+			});
 		</script>
 	</head>
 	<body>
+		<ul class="people">
 
+		</ul>
 	</body>
 </html>
