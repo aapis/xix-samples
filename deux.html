@@ -5,11 +5,47 @@
 
 		<script>
 			window.addEventListener("DOMContentLoaded", function(){
-				// 
+				// Write a People class based on the above objects. Add a `greet` method that says hello and includes the person's name. Iterate over an array of People instances and have them greet us along with their age in 5 years.
+				
+				//People class definition
+				var People = function(name, age){
+					this.name = name;
+					this.age  = age;
+				};
+
+					People.prototype.greet = function(){
+						return "Howdy, "+ this.name + "!  ";
+					};
+
+					People.prototype.ageIn5 = function(){
+						return this.age += 5;
+					};
+
+				//setup loop, output greetings and ages
+				var people = [
+					new People("Jack", 20),
+					new People("Jill", 25),
+					new People("Alex", 30),
+				];
+
+				for(var i = 0; i < people.length; i++){
+					var person = people[i],
+						listEl = document.createElement("li");
+
+					listEl.innerHTML = person.greet();
+
+					//determine age in 5 years
+					listEl.innerHTML += "In 5 years, you will be <strong>"+ person.ageIn5() +"</strong>.";
+
+					//add message to the people node in the DOM
+					document.querySelector("ul.people").appendChild(listEl);
+				}
 			});
 		</script>
 	</head>
 	<body>
+		<ul class="people">
 
+		</ul>
 	</body>
 </html>
