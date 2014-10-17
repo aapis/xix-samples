@@ -2,14 +2,94 @@
 <html>
 	<head>
 		<title>Trois</title>
-		
+
+		<style>
+			.message {
+				padding: 15px;
+				border: 1px solid #ccc;
+				margin-top: 20px;
+				opacity: 1;
+			}
+		</style>
+
 		<script>
 			window.addEventListener("DOMContentLoaded", function(){
-				// 
+				// DOM selection & manipulation
+				//(a) Select all checkboxes with name="awesome" and invert their values (check boxes that are unchecked, uncheck boxes which are checked).
+				//(b) Append a div to the document body that says "One moment please...", and then 5 seconds later the text changes to "Huzzah!". After 10 seconds, the div fades out.
+				
+				//DOM manipulation A:
+				var	actionBtn  = document.querySelector("button[name=action]");
+
+				actionBtn.addEventListener("click", function(evt){
+					evt.preventDefault();
+
+					var awesomeEls = document.querySelectorAll("input[name=awesome]");
+
+					for(var i = 0; i < awesomeEls.length; i++){
+						var el = awesomeEls[i];
+						
+						el.checked = !el.checked;
+					}
+				});
+
+				//DOM manipulation B:
+				var messageEl = document.createElement("div");
+				
+				messageEl.innerText = "One moment please...";
+				messageEl.classList.add("message");
+
+				setTimeout(function(){
+					messageEl.innerText = "Huzzah!";
+				}, 5000);
+
+				setTimeout(function(){
+					fadeOut(messageEl, 300);
+				}, 10000);
+
+				/**
+				 * Fade out any element
+				 * Inspired by comments here:
+				 * 	http://stackoverflow.com/questions/13733912/javascript-fade-in-fade-out-without-jquery-and-css3
+				 * @param  {object} el    DOM object to fade out
+				 * @param  {int}    speed How fast you want the element to fade out at
+				 * @return {void}
+				 */
+				function fadeOut(el, speed){
+					var opacity = 1,
+						timer = setInterval(function(){
+							opacity -= 20 / speed;
+
+							if(opacity <= 0){
+								clearInterval(timer);
+
+								opacity = 0;
+								messageEl.style.visibility = "invisible";
+								messageEl.style.display    = "none";
+								document.body.removeChild(messageEl);
+							}
+
+							messageEl.style.opacity = opacity;
+						}, 50)
+				}
+
+				//render messageEl
+				document.body.appendChild(messageEl);
 			});
 		</script>
 	</head>
 	<body>
+		<form>
+			<label for="id-1">ID1#NotAwesome</label><input type="checkbox" name="not-awesome" id="id-1"/><br />
+			<label for="id-2">ID2#Awesome</label><input type="checkbox" name="awesome" id="id-2" checked="true"/><br />
+			<label for="id-3">ID3#NotAwesome</label><input type="checkbox" name="not-awesome" id="id-3"/><br />
+			<label for="id-4">ID4#Awesome</label><input type="checkbox" name="awesome" id="id-4"/><br />
+			<label for="id-5">ID5#NotAwesome</label><input type="checkbox" name="not-awesome" id="id-5"/><br />
+			<label for="id-6">ID6#Awesome</label><input type="checkbox" name="awesome" id="id-6" checked="true"/><br />
+			<label for="id-7">ID7#NotAwesome</label><input type="checkbox" name="not-awesome" id="id-7"/><br />
+			<label for="id-8">ID8#Awesome</label><input type="checkbox" name="awesome" id="id-8"/><br /><br />
 
+			<button name="action">Invert!</button>
+		</form>
 	</body>
 </html>
